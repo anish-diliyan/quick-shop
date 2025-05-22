@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  database:
+    image: mysql:8.0
+    container_name: quick-shop-mysql
+    environment:
+      MYSQL_DATABASE: quick-shop
+      MYSQL_USER: quick-shop-user
+      MYSQL_PASSWORD: quick-shop-pass
+      MYSQL_ROOT_PASSWORD: root-pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - quick-shop-network
+
+  spring-boot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/quick-shop
+      SPRING_DATASOURCE_USERNAME: quick-shop-user
+      SPRING_DATASOURCE_PASSWORD: quick-shop-pass
+      API_PREFIX: /api/v1
+    ports:
+      - "8080:8080"
+    networks:
+      - quick-shop-network
+
+volumes:
+  mysql_data:
+
+networks:
+  quick-shop-network:
+    driver: bridge
