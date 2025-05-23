@@ -1,4 +1,4 @@
-package com.example.quick_shop;
+package com.example.quickshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
