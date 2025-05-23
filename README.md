@@ -22,3 +22,12 @@ This allows you to override properties via environment variables in Docker witho
 
 ### Docker Containers Can Share Env Variable  
   Containers cannot directly access each other's environment variables, even if they are on the same Docker network. Each container's environment variables are isolated and only available inside that specific container.
+
+### @OneToMany: One product can have many images.
+  mappedBy = "product": The Image entity has a field named product that owns the relationship.
+  cascade = CascadeType.ALL: All operations (save, delete, etc.) on Product will also apply to its images.
+  orphanRemoval = true: If an image is removed from the product's image list, it will be deleted from the database.
+
+  You do not need a product_id field in Product.java. The product_id column is automatically
+  created in the Image table as a foreign key referencing the id column in the Product table.
+  This is how the link between images and products is maintained in the database.

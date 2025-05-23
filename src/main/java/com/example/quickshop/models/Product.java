@@ -27,13 +27,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    /*
-      @OneToMany: One product can have many images.
-      mappedBy = "product": The Image entity has a field named product that owns the relationship.
-      cascade = CascadeType.ALL: All operations (save, delete, etc.) on Product will also apply to its images.
-      orphanRemoval = true: If an image is removed from the product's image list, it will be deleted from the
-      database.
-    */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 }
